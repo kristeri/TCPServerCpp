@@ -5,6 +5,7 @@
 
 int main()
 {
+	// Winsock initialization
 	WSADATA wsData;
 	WORD ver = MAKEWORD(2, 2);
 
@@ -15,6 +16,7 @@ int main()
 		return 1;
 	}
 
+	// Create a listening socket
 	SOCKET listening = socket(AF_INET, SOCK_STREAM, 0);
 	if (listening == INVALID_SOCKET)
 	{
@@ -22,6 +24,7 @@ int main()
 		return 1;
 	}
 
+	// Bind the IP address and port to a socket
 	sockaddr_in hint;
 	hint.sin_family = AF_INET;
 	hint.sin_port = htons(54000);
@@ -59,6 +62,7 @@ int main()
 
 	closesocket(listening);
 
+	// Accept client message and echo back
 	char buf[4096];
 
 	while (true)
@@ -79,8 +83,10 @@ int main()
 		send(clientSocket, buf, bytesReceived + 1, 0);
 	}
 
+	// Close client socket
 	closesocket(clientSocket);
 
+	// Winsock shutdown
 	WSACleanup();
 
 	return 0;
